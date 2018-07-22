@@ -45,14 +45,14 @@ function validate(width, height, url) {
 }
 
 async function getScreenshots(page, browser) {
-    fs.mkdir("../assets-capture-puppeteer", function (err) {
+    fs.mkdir("assets-easy-screen-capture", function (err) {
         if (err) {
             console.log(err);
         }
     });
 
     await page.screenshot({
-        path: "../assets-capture-puppeteer/" + filename + '.png',
+        path: "assets-easy-screen-capture/" + filename,
         fullPage: true
     });
     browser.close();
