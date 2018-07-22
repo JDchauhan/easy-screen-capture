@@ -16,5 +16,8 @@
     "design"
   ],
   "author": "Jagdish Singh <Jagdish.chauhan01@gmail.com> (https://JDchauhan.github.io)",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^1.6.0"
+  }
 }
