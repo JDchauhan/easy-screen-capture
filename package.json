@@ -1,5 +1,5 @@
 {
-  "name": "screen-capture",
+  "name": "easy-screen-capture",
   "version": "1.0.0",
   "description": "A webpage capture tool built over puppeteer, use headless chrome to take screenshot of page in any possible viewport for UI designers and developers in RWD",
   "main": "index.js",
@@ -17,7 +17,7 @@
   ],
   "author": "Jagdish Singh <Jagdish.chauhan01@gmail.com> (https://JDchauhan.github.io)",
   "license": "ISC",
-  "homepage": "https://github.com/JDchauhan/screen-capture#readme",
+  "homepage": "https://github.com/JDchauhan/easy-screen-capture#readme",
   "dependencies": {
     "file-system": "^2.2.2",
     "puppeteer": "^1.6.0"
