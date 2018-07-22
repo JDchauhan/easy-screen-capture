@@ -1,0 +1,20 @@
+{
+  "name": "capture-puppeteer",
+  "version": "1.0.0",
+  "description": "A webpage capture tool built over puppeteer, use headless chrome to take screenshot of page in any possible viewport for UI designers and developers in RWD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "capture",
+    "screenshot",
+    "puppeteer",
+    "RWD",
+    "responsive",
+    "web",
+    "design"
+  ],
+  "author": "Jagdish Singh <Jagdish.chauhan01@gmail.com> (https://JDchauhan.github.io)",
+  "license": "ISC"
+}
