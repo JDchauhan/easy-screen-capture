@@ -1,4 +1,4 @@
-# Capture Puppeteer
+# Screen Capture
 
 A webpage capture NPM package built over puppeteer, use headless chrome to take screenshot of page in any possible viewport for UI designers and developers in RWD
 
@@ -15,7 +15,7 @@ A webpage capture NPM package built over puppeteer, use headless chrome to take 
 
 * [Jagdish Singh](https://github.com/JDchauhan)
 
-Please submit bug reports to [https://github.com/JDchauhan/capture-puppeteer](https://github.com/JDchauhan/capture-puppeteer).
+Please submit bug reports to [https://github.com/JDchauhan/screen-capture](https://github.com/JDchauhan/screen-capture).
 
 
 Pull requests are welcome.
