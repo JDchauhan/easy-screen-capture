@@ -1,3 +1,3 @@
-var test = require('./index');
+var easyScreenCapture = require("easy-screen-capture")
 
-test.capture(140, 120, "https://www.google.com");
+easyScreenCapture.capture(320, 640, "https://www.google.com")
