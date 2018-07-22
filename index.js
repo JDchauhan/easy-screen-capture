@@ -3,13 +3,13 @@ var fs = require('file-system');
 
 var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
 
-function validate(width, height, url){
+function validate(width, height, url) {
     var test = true;
-    if(isNaN(width) || width === ""){
+    if (isNaN(width) || width === "") {
         test = false;
         console.error("invalid width");
     }
-    if(isNaN(height) || height === ""){
+    if (isNaN(height) || height === "") {
         test = false;
         console.error("invalid height");
     }
@@ -20,24 +20,24 @@ function validate(width, height, url){
         return false;
     }
 
-    if(typeof(url) !== "string"){
+    if (typeof (url) !== "string") {
         console.error("URL is incorrect");
         return false;
     }
-    
-    if(url.indexOf(".") === -1){
+
+    if (url.indexOf(".") === -1) {
         console.error("URL is incorrect");
         return false;
     }
 
     var test = url.split(":");
-    
-    if(test[0] !== "http" && test[0] !== "https" && test[0] !== "ftp"){
+
+    if (test[0] !== "http" && test[0] !== "https" && test[0] !== "ftp") {
         console.error("URL must contain host name");
         return false;
     }
 
-    if(test[1].slice(0,2) !== "//"){
+    if (test[1].slice(0, 2) !== "//") {
         test = false;
         console.error("URL is incorrect");
     }
@@ -60,9 +60,9 @@ async function getScreenshots(page, browser) {
 }
 
 async function getUrlAndResolutions(width, height, url) {
-        let test = await setViewports(width, height, url);
-        if (test === "URLErr")
-            return 
+    let test = await setViewports(width, height, url);
+    if (test === "URLErr")
+        return
 }
 
 async function setViewports(width, height, url) {
@@ -90,7 +90,7 @@ async function setViewports(width, height, url) {
 
 module.exports.capture = function (width, height, url) {
 
-    if(!validate(width, height, url)){
+    if (!validate(width, height, url)) {
         return;
     }
 

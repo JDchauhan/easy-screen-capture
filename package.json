@@ -4,7 +4,7 @@
   "description": "A webpage capture tool built over puppeteer, use headless chrome to take screenshot of page in any possible viewport for UI designers and developers in RWD",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "keywords": [
     "capture",
