@@ -17,6 +17,7 @@
   ],
   "author": "Jagdish Singh <Jagdish.chauhan01@gmail.com> (https://JDchauhan.github.io)",
   "license": "ISC",
+  "homepage": "https://github.com/JDchauhan/screen-capture#readme",
   "dependencies": {
     "file-system": "^2.2.2",
     "puppeteer": "^1.6.0"
