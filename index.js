@@ -1,6 +1,7 @@
 var puppeteer = require('puppeteer');
 var fs = require('file-system');
 
+var dirname = "";
 var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
 
 function validate(width, height, url) {
@@ -45,14 +46,20 @@ function validate(width, height, url) {
 }
 
 async function getScreenshots(page, browser) {
-    fs.mkdir("assets-easy-screen-capture", function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    var screenshotPath;
+    if(dirname === ""){
+        fs.mkdir("assets-easy-screen-capture", function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });    
+        screenshotPath =  "assets-easy-screen-capture/" + filename;
+    }else {
+        screenshotPath =  dirname + "/" + filename;
+    }
 
     await page.screenshot({
-        path: "assets-easy-screen-capture/" + filename,
+        path: screenshotPath,
         fullPage: true
     });
     browser.close();
@@ -87,6 +94,9 @@ async function setViewports(width, height, url) {
     await getScreenshots(page, browser);
 }
 
+function sanitizeLocation(location){
+    return location.replace(/[|"<>:*?]/g, "");
+}
 
 module.exports.capture = function (width, height, url) {
 
@@ -95,4 +105,24 @@ module.exports.capture = function (width, height, url) {
     }
 
     getUrlAndResolutions(width, height, url);
+};
+
+module.exports.setDir = function (location) {
+    if(typeof(location) !== "string"){
+        console.log("Location must be an string");
+        return;
+    }
+    location = sanitizeLocation(location);
+    console.log("After sanitization your path will be:", location);
+
+    if (!fs.existsSync(location)){
+        fs.mkdir(location, function (err) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+        });
+    }
+
+    dirname = location;
 };

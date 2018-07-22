@@ -18,16 +18,28 @@ Capture screenshot by calling function capture which requires 3 parameters width
 
 ### Usage:
 
-    var easyScreenCapture = require("easy-screen-capture")
+#### Initialization:
+
+        var easyScreenCapture = require("easy-screen-capture")
     
+#### Capturing Screenshot:
+
     let width = 320;
     let height = 640;
     let url = "https://www.google.com";
     easyScreenCapture.capture(width, height, url)
 
+#### Changing default directory for output files / Saving to custom directory:
+
+you can also save the file to a custom directory. for this you need to set the directory using
+
+        easyScreenCapture.setDir("/path/to/desired/directory");
+
+before call to capture();
+
 ### Results:
 
-Using above code would create a folder in directory "assets-easy-screen-capture" located in the same directory in which the calling script exists.
+Using above code would create a folder in directory **"assets-easy-screen-capture"** located in the same directory in which the calling script exists.
 
 All your captured PNG files are saved in this directory.
 
@@ -42,7 +54,7 @@ In case of error you get errors in console as well as.
 
 ### Core Contributors:
 
-* [Jagdish Singh](https://github.com/JDchauhan)
+* **_[Jagdish Singh](https://github.com/JDchauhan)_**
 
 Please submit bug reports to [https://github.com/JDchauhan/easy-screen-capture](https://github.com/JDchauhan/easy-screen-capture).
 
