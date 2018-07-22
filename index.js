@@ -3,6 +3,7 @@ var fs = require('file-system');
 
 var dirname = "";
 var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
+var timeout = 30000;
 
 function validate(width, height, url) {
     var test = true;
@@ -87,7 +88,7 @@ async function setViewports(width, height, url) {
     try {
         var browser = await puppeteer.launch({
             args: ['--no-sandbox'],
-            timeout: 10000,
+            timeout: timeout,
         });
 
         var page = await browser.newPage();
@@ -141,4 +142,12 @@ module.exports.setDir = function (location) {
     }
 
     dirname = location;
+};
+
+module.exports.setTimeOut = function (duration = 30000) {
+    if (isNaN(duration)) {
+        console.error("Inavalid Duration");
+        return;
+    }
+    timeout = duration;
 };

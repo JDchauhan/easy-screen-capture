@@ -37,6 +37,15 @@ you can also save the file to a custom directory. for this you need to set the d
 
 before call to capture();
 
+#### Set time to wait for browser instance to start :
+
+It is used to set maximum time in milliseconds to wait for the browser instance to start.
+
+* Defaults to 30000 (30 seconds).
+* Pass 0 to disable timeout.
+
+        easyScreenCapture.setTimeOut(0);
+
 ### Results:
 
 Using above code would create a folder in directory **"assets-easy-screen-capture"** located in the same directory in which the calling script exists.
