@@ -47,54 +47,70 @@ function validate(width, height, url) {
 
 async function getScreenshots(page, browser) {
     var screenshotPath;
-    if(dirname === ""){
+    if (dirname === "") {
         fs.mkdir("assets-easy-screen-capture", function (err) {
             if (err) {
                 console.log(err);
             }
-        });    
-        screenshotPath =  "assets-easy-screen-capture/" + filename;
-    }else {
-        screenshotPath =  dirname + "/" + filename;
+        });
+        screenshotPath = "assets-easy-screen-capture/" + filename;
+    } else {
+        screenshotPath = dirname + "/" + filename;
     }
 
-    await page.screenshot({
-        path: screenshotPath,
-        fullPage: true
-    });
-    browser.close();
+    try {
+        await page.screenshot({
+            path: screenshotPath,
+            fullPage: true
+        });
+
+        browser.close();
+
+    } catch (err) {
+        console.log(err);
+    }
+
     console.info("successfully captured");
 }
 
 async function getUrlAndResolutions(width, height, url) {
-    let test = await setViewports(width, height, url);
-    if (test === "URLErr")
-        return
+    try {
+        let test = await setViewports(width, height, url);
+        if (test === false)
+            return;
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 async function setViewports(width, height, url) {
-    var browser = await puppeteer.launch({
-        args: ['--no-sandbox'],
-        timeout: 10000,
-    });
-    var page = await browser.newPage();
-    await page.waitFor(500);
     try {
-        let test = await page.goto(url);
-    } catch (err) {
-        console.log("Unable to visit the provided URL.");
-        return "URLErr"
-    }
+        var browser = await puppeteer.launch({
+            args: ['--no-sandbox'],
+            timeout: 10000,
+        });
 
-    // Setting-up viewports 
-    await page.setViewport({
-        width: width,
-        height: height
-    });
-    await getScreenshots(page, browser);
+        var page = await browser.newPage();
+
+        await page.waitFor(500);
+
+        await page.goto(url);
+
+        // Setting-up viewports 
+        await page.setViewport({
+            width: width,
+            height: height
+        });
+
+        await getScreenshots(page, browser);
+
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
 }
 
-function sanitizeLocation(location){
+function sanitizeLocation(location) {
     return location.replace(/[|"<>:*?]/g, "");
 }
 
@@ -108,14 +124,14 @@ module.exports.capture = function (width, height, url) {
 };
 
 module.exports.setDir = function (location) {
-    if(typeof(location) !== "string"){
+    if (typeof (location) !== "string") {
         console.log("Location must be an string");
         return;
     }
     location = sanitizeLocation(location);
     console.log("After sanitization your path will be:", location);
 
-    if (!fs.existsSync(location)){
+    if (!fs.existsSync(location)) {
         fs.mkdir(location, function (err) {
             if (err) {
                 console.error(err);
