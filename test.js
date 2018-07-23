@@ -14,4 +14,8 @@ easyScreenCapture.setTimeOut(0);
  */
 easyScreenCapture.setDir("/path/to/desired/directory");
 
+// capture screenshot
 easyScreenCapture.capture(320, 640, "https://www.google.com")
+
+// capture another screenshot with specifying directory in one call
+easyScreenCapture.capture(320, 640, "https://www.google.com", "test_directory");

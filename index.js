@@ -115,7 +115,11 @@ function sanitizeLocation(location) {
     return location.replace(/[|"<>:*?]/g, "");
 }
 
-module.exports.capture = function (width, height, url) {
+module.exports.capture = function (width, height, url, location) {
+
+    if(location){
+       this.setDir(location); 
+    }
 
     if (!validate(width, height, url)) {
         return;

@@ -22,14 +22,22 @@ Capture screenshot by calling function capture which requires 3 parameters width
 
         var easyScreenCapture = require("easy-screen-capture")
     
-#### Capturing Screenshot:
+#### Capturing Screenshot in default directory:
 
     let width = 320;
     let height = 640;
     let url = "https://www.google.com";
     easyScreenCapture.capture(width, height, url)
 
-#### Changing default directory for output files / Saving to custom directory:
+#### Capture screenshot to custom directory:
+
+    let width = 320;
+    let height = 640;
+    let url = "https://www.google.com";
+    let directory = "/path/to/desired/directory";
+    easyScreenCapture.capture(width, height, url, directory)
+
+#### Set output directory:
 
 you can also save the file to a custom directory. for this you need to set the directory using
 
