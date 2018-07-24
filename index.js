@@ -45,22 +45,14 @@ function validate(width, height, url) {
     return test;
 }
 
-async function getScreenshots(page, browser) {
+async function getScreenshots(page, browser, directory) {
     var screenshotPath;
     var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
 
-    if (dirname === "") {
-        fs.mkdir("assets-easy-screen-capture", function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
-        screenshotPath = "assets-easy-screen-capture/" + filename;
-    } else {
-        screenshotPath = dirname + "/" + filename;
-        console.log(screenshotPath);
+    screenshotPath = directory + "/" + filename;
+    if(directory === ""){
+        screenshotPath = "assets-easy-screen-capture/" + filename;    
     }
-
     try {
         await page.screenshot({
             path: screenshotPath,
@@ -77,8 +69,15 @@ async function getScreenshots(page, browser) {
 }
 
 async function getUrlAndResolutions(width, height, url) {
+    if (dirname === "") {
+        fs.mkdir("assets-easy-screen-capture", function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
     try {
-        let test = await setViewports(width, height, url);
+        let test = await setViewports(width, height, url, dirname);
         if (test === false)
             return;
     } catch (err) {
@@ -86,7 +85,7 @@ async function getUrlAndResolutions(width, height, url) {
     }
 }
 
-async function setViewports(width, height, url) {
+async function setViewports(width, height, url, directory) {
     try {
         var browser = await puppeteer.launch({
             args: ['--no-sandbox'],
@@ -105,7 +104,7 @@ async function setViewports(width, height, url) {
             height: height
         });
 
-        await getScreenshots(page, browser);
+        await getScreenshots(page, browser, directory);
 
     } catch (err) {
         console.error(err);
