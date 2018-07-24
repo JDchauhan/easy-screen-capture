@@ -2,7 +2,6 @@ var puppeteer = require('puppeteer');
 var fs = require('file-system');
 
 var dirname = "";
-var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
 var timeout = 30000;
 
 function validate(width, height, url) {
@@ -48,6 +47,8 @@ function validate(width, height, url) {
 
 async function getScreenshots(page, browser) {
     var screenshotPath;
+    var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
+
     if (dirname === "") {
         fs.mkdir("assets-easy-screen-capture", function (err) {
             if (err) {
@@ -57,6 +58,7 @@ async function getScreenshots(page, browser) {
         screenshotPath = "assets-easy-screen-capture/" + filename;
     } else {
         screenshotPath = dirname + "/" + filename;
+        console.log(screenshotPath);
     }
 
     try {
