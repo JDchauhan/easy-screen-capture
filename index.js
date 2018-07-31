@@ -4,7 +4,39 @@ var fs = require('file-system');
 var dirname = "";
 var timeout = 30000;
 
-function validate(width, height, url) {
+function validateUrl(url) {
+    var test = true;
+    //url validation
+    if (!url || url === "") {
+        console.error("URL must present", url);
+        return false;
+    }
+
+    if (typeof (url) !== "string") {
+        console.error("URL is incorrect", url);
+        return false;
+    }
+
+    if (url.indexOf(".") === -1) {
+        console.error("URL is incorrect", url);
+        return false;
+    }
+
+    var test = url.split(":");
+
+    if (test[0] !== "http" && test[0] !== "https" && test[0] !== "ftp") {
+        console.error("URL must contain host name", url);
+        return false;
+    }
+
+    if (test[1].slice(0, 2) !== "//") {
+        test = false;
+        console.error("URL is incorrect", url);
+    }
+    return test;
+}
+
+function validate(width, height, urls) {
     var test = true;
     if (isNaN(width) || width === "") {
         test = false;
@@ -14,33 +46,10 @@ function validate(width, height, url) {
         test = false;
         console.error("invalid height");
     }
-
-    //url validation
-    if (!url || url === "") {
-        console.error("URL must present");
-        return false;
-    }
-
-    if (typeof (url) !== "string") {
-        console.error("URL is incorrect");
-        return false;
-    }
-
-    if (url.indexOf(".") === -1) {
-        console.error("URL is incorrect");
-        return false;
-    }
-
-    var test = url.split(":");
-
-    if (test[0] !== "http" && test[0] !== "https" && test[0] !== "ftp") {
-        console.error("URL must contain host name");
-        return false;
-    }
-
-    if (test[1].slice(0, 2) !== "//") {
-        test = false;
-        console.error("URL is incorrect");
+    for (var i = 0; i < urls.length; i++) {
+        if (!validateUrl(urls[i])) {
+            test = false;
+        }
     }
     return test;
 }
@@ -50,16 +59,14 @@ async function getScreenshots(page, browser, directory) {
     var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
 
     screenshotPath = directory + "/" + filename;
-    if(directory === ""){
-        screenshotPath = "assets-easy-screen-capture/" + filename;    
+    if (directory === "") {
+        screenshotPath = "assets-easy-screen-capture/" + filename;
     }
     try {
         await page.screenshot({
             path: screenshotPath,
             fullPage: true
         });
-
-        browser.close();
 
     } catch (err) {
         console.log(err);
@@ -68,7 +75,7 @@ async function getScreenshots(page, browser, directory) {
     console.info("successfully captured");
 }
 
-async function getUrlAndResolutions(width, height, url) {
+async function getUrlAndResolutions(width, height, urls) {
     if (dirname === "") {
         fs.mkdir("assets-easy-screen-capture", function (err) {
             if (err) {
@@ -77,7 +84,7 @@ async function getUrlAndResolutions(width, height, url) {
         });
     }
     try {
-        let test = await setViewports(width, height, url, dirname);
+        let test = await setViewports(width, height, urls, dirname);
         if (test === false)
             return;
     } catch (err) {
@@ -85,7 +92,7 @@ async function getUrlAndResolutions(width, height, url) {
     }
 }
 
-async function setViewports(width, height, url, directory) {
+async function setViewports(width, height, urls, directory) {
     try {
         var browser = await puppeteer.launch({
             args: ['--no-sandbox'],
@@ -96,15 +103,20 @@ async function setViewports(width, height, url, directory) {
 
         await page.waitFor(500);
 
-        await page.goto(url);
+        for (var i = 0; i < urls.length; i++) {
+            await page.goto(urls[i]);
 
-        // Setting-up viewports 
-        await page.setViewport({
-            width: width,
-            height: height
-        });
+            // Setting-up viewports 
+            await page.setViewport({
+                width: width,
+                height: height
+            });
 
-        await getScreenshots(page, browser, directory);
+            await getScreenshots(page, browser, directory);
+
+        }
+
+        browser.close();
 
     } catch (err) {
         console.error(err);
@@ -116,17 +128,20 @@ function sanitizeLocation(location) {
     return location.replace(/[|"<>:*?]/g, "");
 }
 
-module.exports.capture = function (width, height, url, location) {
-
-    if(location){
-       this.setDir(location); 
+module.exports.capture = function (width, height, urls, location) {
+    if (typeof (urls) === "string") {
+        urls = [urls];
     }
 
-    if (!validate(width, height, url)) {
+    if (location) {
+        this.setDir(location);
+    }
+
+    if (!validate(width, height, urls)) {
         return;
     }
 
-    getUrlAndResolutions(width, height, url);
+    getUrlAndResolutions(width, height, urls);
 };
 
 module.exports.setDir = function (location) {
