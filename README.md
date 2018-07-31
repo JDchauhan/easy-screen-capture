@@ -37,6 +37,15 @@ Capture screenshot by calling function capture which requires 3 parameters width
     let directory = "/path/to/desired/directory";
     easyScreenCapture.capture(width, height, url, directory)
 
+#### Capture screenshot with multiple urls:
+
+    let width = 320;
+    let height = 640;
+    let url = "https://www.google.com";
+    let directory = "/path/to/desired/directory";
+    let urls = ["https://www.google.com", "https://github.com/JDchauhan/easy-screen-capture"];
+    easyScreenCapture.capture(width, height, urls, directory)
+
 #### Set output directory:
 
 you can also save the file to a custom directory. for this you need to set the directory using
