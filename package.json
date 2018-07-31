@@ -1,6 +1,6 @@
 {
   "name": "easy-screen-capture",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "A webpage capture tool built over puppeteer, use headless chrome to take screenshot of page in any possible viewport for UI designers and developers in RWD",
   "main": "index.js",
   "scripts": {
