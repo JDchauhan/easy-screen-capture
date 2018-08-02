@@ -1,4 +1,4 @@
-var easyScreenCapture = require("./index")
+var easyScreenCapture = require("easy-screen-capture")
 
 /*
  * Maximum time in milliseconds to wait for the browser instance to start.
