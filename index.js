@@ -53,16 +53,20 @@ function validate(viewports, urls) {
     }
 
     for (var i = 0; i < urls.length; i++) {
-        if (!validateUrl(urls[i])) {
+        if (!validateUrl(urls[i].url)) {
             test = false;
         }
     }
     return test;
 }
 
-async function getScreenshots(page, directory, height, width) {
+async function getScreenshots(page, directory, height, width, name) {
     var screenshotPath;
-    var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + "(" + height + "x" + width + ").png";
+    if(!name){
+        var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + "(" + height + "x" + width + ").png";
+    }else{
+        var filename = name + "(" + height + "x" + width + ").png";
+    }
 
     screenshotPath = directory + "/" + filename;
     if (directory === "") {
@@ -110,13 +114,13 @@ async function setViewports(viewports, urls, directory) {
         await page.waitFor(500);
 
         for (var i = 0; i < urls.length; i++) {
-            await page.goto(urls[i]);
+            await page.goto(urls[i].url);
 
             for(var j = 0; j < viewports.length; j++){
                 // Setting-up viewports
                 await page.setViewport(viewports[j]);
 
-                await getScreenshots(page, directory, viewports[j].height, viewports[j].width);
+                await getScreenshots(page, directory, viewports[j].height, viewports[j].width, urls[i].name);
             }
         }
 
@@ -134,7 +138,7 @@ function sanitizeLocation(location) {
 
 module.exports.capture = function (viewports, urls, location) {
     if (typeof (urls) === "string") {
-        urls = [urls];
+        urls = [{url: urls}];
     }
 
     if (location) {
