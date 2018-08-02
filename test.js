@@ -12,13 +12,19 @@ easyScreenCapture.setTimeOut(0);
  * i.e "assets-easy-screen-capture" located in the same directory in which
  * the calling script exists
  */
-//easyScreenCapture.setDir("/path/to/desired/directory");
+easyScreenCapture.setDir("/path/to/desired/directory");
 
-// capture screenshot
-easyScreenCapture.capture(320, 640, "https://www.google.com")
+var viewports = [{
+    height: 736,
+    width: 414
+}, {
+    height: 1080,
+    width: 1920
+}]
 
-// capture another screenshot with specifying directory in one call
-easyScreenCapture.capture(320, 640, "https://www.google.com", "test_directory");
-
-// capture another screenshot with specifying directory in one call with multiple urls
-easyScreenCapture.capture(320, 640, ["https://www.google.com", "https://github.com/JDchauhan/easy-screen-capture"], "test");
+var urls = [
+    "https://www.google.com",
+    "https://github.com/JDchauhan/easy-screen-capture",
+    "https://www.npmjs.com/~jdchauhan"
+]
+easyScreenCapture.capture(viewports, urls, "test");
