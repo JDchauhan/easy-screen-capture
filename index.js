@@ -36,27 +36,37 @@ function validateUrl(url) {
     return test;
 }
 
-function validate(width, height, urls) {
+function validate(viewports, urls) {
     var test = true;
-    if (isNaN(width) || width === "") {
-        test = false;
-        console.error("invalid width");
+    for (var i = 0; i < viewports.length; i++) {
+        var width = viewports[i].width;
+        var height = viewports[i].height;
+
+        if (isNaN(width) || width === "") {
+            test = false;
+            console.error("invalid width");
+        }
+        if (isNaN(height) || height === "") {
+            test = false;
+            console.error("invalid height");
+        }
     }
-    if (isNaN(height) || height === "") {
-        test = false;
-        console.error("invalid height");
-    }
+
     for (var i = 0; i < urls.length; i++) {
-        if (!validateUrl(urls[i])) {
+        if (!validateUrl(urls[i].url)) {
             test = false;
         }
     }
     return test;
 }
 
-async function getScreenshots(page, browser, directory) {
+async function getScreenshots(page, directory, height, width, name) {
     var screenshotPath;
-    var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + ".png";
+    if (!name) {
+        var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + "(" + height + "x" + width + ").png";
+    } else {
+        var filename = name + "(" + height + "x" + width + ").png";
+    }
 
     screenshotPath = directory + "/" + filename;
     if (directory === "") {
@@ -75,7 +85,7 @@ async function getScreenshots(page, browser, directory) {
     console.info("successfully captured");
 }
 
-async function getUrlAndResolutions(width, height, urls) {
+async function getUrlAndResolutions(viewports, urls) {
     if (dirname === "") {
         fs.mkdir("assets-easy-screen-capture", function (err) {
             if (err) {
@@ -84,7 +94,7 @@ async function getUrlAndResolutions(width, height, urls) {
         });
     }
     try {
-        let test = await setViewports(width, height, urls, dirname);
+        let test = await setViewports(viewports, urls, dirname);
         if (test === false)
             return;
     } catch (err) {
@@ -92,7 +102,7 @@ async function getUrlAndResolutions(width, height, urls) {
     }
 }
 
-async function setViewports(width, height, urls, directory) {
+async function setViewports(viewports, urls, directory) {
     try {
         var browser = await puppeteer.launch({
             args: ['--no-sandbox'],
@@ -104,16 +114,14 @@ async function setViewports(width, height, urls, directory) {
         await page.waitFor(500);
 
         for (var i = 0; i < urls.length; i++) {
-            await page.goto(urls[i]);
+            await page.goto(urls[i].url);
 
-            // Setting-up viewports 
-            await page.setViewport({
-                width: width,
-                height: height
-            });
+            for (var j = 0; j < viewports.length; j++) {
+                // Setting-up viewports
+                await page.setViewport(viewports[j]);
 
-            await getScreenshots(page, browser, directory);
-
+                await getScreenshots(page, directory, viewports[j].height, viewports[j].width, urls[i].name);
+            }
         }
 
         browser.close();
@@ -128,20 +136,22 @@ function sanitizeLocation(location) {
     return location.replace(/[|"<>:*?]/g, "");
 }
 
-module.exports.capture = function (width, height, urls, location) {
+module.exports.capture = function (viewports, urls, location) {
     if (typeof (urls) === "string") {
-        urls = [urls];
+        urls = [{
+            url: urls
+        }];
     }
 
     if (location) {
         this.setDir(location);
     }
 
-    if (!validate(width, height, urls)) {
+    if (!validate(viewports, urls)) {
         return;
     }
 
-    getUrlAndResolutions(width, height, urls);
+    getUrlAndResolutions(viewports, urls);
 };
 
 module.exports.setDir = function (location) {
