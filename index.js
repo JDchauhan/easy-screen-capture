@@ -38,7 +38,7 @@ function validateUrl(url) {
 
 function validate(viewports, urls) {
     var test = true;
-    for(var i = 0; i < viewports.length; i++){
+    for (var i = 0; i < viewports.length; i++) {
         var width = viewports[i].width;
         var height = viewports[i].height;
 
@@ -62,9 +62,9 @@ function validate(viewports, urls) {
 
 async function getScreenshots(page, directory, height, width, name) {
     var screenshotPath;
-    if(!name){
+    if (!name) {
         var filename = new Date().getTime().toString() + Math.floor((Math.random() * 100000) + 1) + "(" + height + "x" + width + ").png";
-    }else{
+    } else {
         var filename = name + "(" + height + "x" + width + ").png";
     }
 
@@ -116,7 +116,7 @@ async function setViewports(viewports, urls, directory) {
         for (var i = 0; i < urls.length; i++) {
             await page.goto(urls[i].url);
 
-            for(var j = 0; j < viewports.length; j++){
+            for (var j = 0; j < viewports.length; j++) {
                 // Setting-up viewports
                 await page.setViewport(viewports[j]);
 
@@ -138,7 +138,9 @@ function sanitizeLocation(location) {
 
 module.exports.capture = function (viewports, urls, location) {
     if (typeof (urls) === "string") {
-        urls = [{url: urls}];
+        urls = [{
+            url: urls
+        }];
     }
 
     if (location) {

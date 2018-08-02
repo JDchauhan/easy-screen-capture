@@ -22,9 +22,15 @@ var viewports = [{
     width: 1920
 }]
 
-var urls = [
-    {url: "https://www.google.com"},
-    {url: "https://github.com/JDchauhan/easy-screen-capture"},
-    {name: "npm", url: "https://www.npmjs.com/~jdchauhan"}
+var urls = [{
+        url: "https://www.google.com"
+    },
+    {
+        url: "https://github.com/JDchauhan/easy-screen-capture"
+    },
+    {
+        name: "npm",
+        url: "https://www.npmjs.com/~jdchauhan"
+    }
 ]
 easyScreenCapture.capture(viewports, urls, "test");
